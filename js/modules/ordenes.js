@@ -1,43 +1,42 @@
 import { supabase } from '../supabase-client.js';
 import { currentUser } from './auth.js';
 
-// Formulario para nueva orden
 export async function renderizarFormulario() {
     const { data: proveedores } = await supabase.from('proveedores').select('*').order('nombre');
     const opciones = proveedores?.map(p => `<option value="${p.id}">${p.nombre}</option>`).join('') || '';
 
     const html = `
-        <div class="bg-slate-800 rounded-lg p-6">
-            <h2 class="text-xl font-bold text-white mb-4">Nueva Orden de Compra</h2>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Nueva Orden de Compra</h2>
             <form id="form-orden" class="space-y-4">
                 <div>
-                    <label class="block text-sm text-slate-400">Proveedor</label>
-                    <select id="orden-proveedor" class="w-full bg-slate-700 border border-slate-600 rounded p-2 text-white">
+                    <label class="block text-sm font-medium text-gray-600">Proveedor</label>
+                    <select id="orden-proveedor" class="w-full border border-gray-300 rounded-lg p-2.5 text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none">
                         <option value="">Seleccione...</option>
                         ${opciones}
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm text-slate-400">Número de Pedido</label>
-                    <input type="text" id="orden-pedido" class="w-full bg-slate-700 border border-slate-600 rounded p-2 text-white">
+                    <label class="block text-sm font-medium text-gray-600">Número de Pedido</label>
+                    <input type="text" id="orden-pedido" class="w-full border border-gray-300 rounded-lg p-2.5 text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm text-slate-400">Descripción</label>
-                    <textarea id="orden-desc" rows="2" class="w-full bg-slate-700 border border-slate-600 rounded p-2 text-white" required></textarea>
+                    <label class="block text-sm font-medium text-gray-600">Descripción</label>
+                    <textarea id="orden-desc" rows="2" class="w-full border border-gray-300 rounded-lg p-2.5 text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none" required></textarea>
                 </div>
                 <div>
-                    <label class="block text-sm text-slate-400">Monto (USD)</label>
-                    <input type="number" step="0.01" id="orden-monto" class="w-full bg-slate-700 border border-slate-600 rounded p-2 text-white" required>
+                    <label class="block text-sm font-medium text-gray-600">Monto (USD)</label>
+                    <input type="number" step="0.01" id="orden-monto" class="w-full border border-gray-300 rounded-lg p-2.5 text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none" required>
                 </div>
                 <div>
-                    <label class="block text-sm text-slate-400">Estado</label>
-                    <select id="orden-estado" class="w-full bg-slate-700 border border-slate-600 rounded p-2 text-white">
+                    <label class="block text-sm font-medium text-gray-600">Estado</label>
+                    <select id="orden-estado" class="w-full border border-gray-300 rounded-lg p-2.5 text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none">
                         <option value="pendiente">Pendiente</option>
                         <option value="en_camino">En camino</option>
                         <option value="recibido">Recibido</option>
                     </select>
                 </div>
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded">Guardar Orden</button>
+                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2.5 rounded-lg transition-colors">Guardar Orden</button>
             </form>
         </div>
     `;
@@ -65,31 +64,30 @@ export async function renderizarFormulario() {
     });
 }
 
-// Lista de órdenes con botón para recibir
 export async function renderizarLista() {
     const { data: ordenes } = await supabase
         .from('ordenes_compra')
         .select('*, proveedores(nombre)')
         .order('fecha_pedido', { ascending: false });
 
-    let html = `<div class="bg-slate-800 rounded-lg p-6">
-        <h2 class="text-xl font-bold text-white mb-4">Órdenes de Compra</h2>
+    let html = `<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Órdenes de Compra</h2>
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm">
-                <thead class="bg-slate-700 text-slate-300 uppercase">
-                    <tr><th class="p-2">Fecha</th><th class="p-2">Proveedor</th><th class="p-2">Descripción</th><th class="p-2">Monto</th><th class="p-2">Estado</th><th class="p-2">Acción</th></tr>
+                <thead class="bg-gray-100 text-gray-600 uppercase">
+                    <tr><th class="p-3 font-semibold">Fecha</th><th class="p-3 font-semibold">Proveedor</th><th class="p-3 font-semibold">Descripción</th><th class="p-3 font-semibold">Monto</th><th class="p-3 font-semibold">Estado</th><th class="p-3 font-semibold">Acción</th></tr>
                 </thead>
-                <tbody class="divide-y divide-slate-700">`;
+                <tbody class="divide-y divide-gray-200">`;
 
     ordenes?.forEach(o => {
-        html += `<tr class="hover:bg-slate-750">
-            <td class="p-2">${new Date(o.fecha_pedido).toLocaleDateString('es-VE')}</td>
-            <td class="p-2">${o.proveedores?.nombre || '--'}</td>
-            <td class="p-2">${o.descripcion}</td>
-            <td class="p-2">$${o.monto.toFixed(2)}</td>
-            <td class="p-2">${badgeEstado(o.estado)}</td>
-            <td class="p-2">
-                ${o.estado !== 'recibido' ? `<button class="btn-recibir text-green-400 hover:underline text-xs" data-id="${o.id}">✅ Recibir</button>` : ''}
+        html += `<tr class="hover:bg-gray-50">
+            <td class="p-3">${new Date(o.fecha_pedido).toLocaleDateString('es-VE')}</td>
+            <td class="p-3 font-medium text-gray-800">${o.proveedores?.nombre || '--'}</td>
+            <td class="p-3">${o.descripcion}</td>
+            <td class="p-3 font-medium">$${o.monto.toFixed(2)}</td>
+            <td class="p-3">${badgeEstado(o.estado)}</td>
+            <td class="p-3">
+                ${o.estado !== 'recibido' ? `<button class="btn-recibir bg-green-100 hover:bg-green-200 text-green-700 px-2 py-1 rounded text-xs font-medium transition-colors" data-id="${o.id}">✅ Recibir</button>` : ''}
             </td>
         </tr>`;
     });
@@ -110,9 +108,9 @@ export async function renderizarLista() {
 
 function badgeEstado(estado) {
     const colores = {
-        pendiente: 'bg-yellow-900/50 text-yellow-300',
-        en_camino: 'bg-blue-900/50 text-blue-300',
-        recibido: 'bg-green-900/50 text-green-300'
+        pendiente: 'bg-yellow-100 text-yellow-700',
+        en_camino: 'bg-blue-100 text-blue-700',
+        recibido: 'bg-green-100 text-green-700'
     };
-    return `<span class="px-2 py-1 rounded text-xs font-semibold ${colores[estado]}">${estado.replace('_', ' ')}</span>`;
+    return `<span class="px-2.5 py-1 rounded-full text-xs font-semibold ${colores[estado]}">${estado.replace('_', ' ')}</span>`;
 }

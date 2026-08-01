@@ -15,23 +15,23 @@ export async function renderizarResumen() {
         }
     });
 
-    let html = `<div class="bg-slate-800 rounded-lg p-6">
-        <h2 class="text-xl font-bold text-white mb-4">Resumen Mensual de Gastos</h2>
+    let html = `<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Resumen Mensual de Gastos</h2>
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm">
-                <thead class="bg-slate-700 text-slate-300 uppercase">
-                    <tr><th class="p-2">Mes</th><th class="p-2">Total</th><th class="p-2">Recibido</th><th class="p-2">Pendiente</th><th class="p-2">En Camino</th></tr>
+                <thead class="bg-gray-100 text-gray-600 uppercase">
+                    <tr><th class="p-3 font-semibold">Mes</th><th class="p-3 font-semibold">Total</th><th class="p-3 font-semibold">Recibido</th><th class="p-3 font-semibold">Pendiente</th><th class="p-3 font-semibold">En Camino</th></tr>
                 </thead>
-                <tbody class="divide-y divide-slate-700">`;
+                <tbody class="divide-y divide-gray-200">`;
 
     Object.keys(mensual).sort().reverse().forEach(mes => {
         const m = mensual[mes];
-        html += `<tr class="hover:bg-slate-750">
-            <td class="p-2">${mes}</td>
-            <td class="p-2">$${m.total.toFixed(2)}</td>
-            <td class="p-2">$${m.recibido.toFixed(2)}</td>
-            <td class="p-2">$${m.pendiente.toFixed(2)}</td>
-            <td class="p-2">$${m.en_camino.toFixed(2)}</td>
+        html += `<tr class="hover:bg-gray-50">
+            <td class="p-3 font-medium text-gray-800">${mes}</td>
+            <td class="p-3 font-bold text-blue-600">$${m.total.toFixed(2)}</td>
+            <td class="p-3 text-green-600">$${m.recibido.toFixed(2)}</td>
+            <td class="p-3 text-yellow-600">$${m.pendiente.toFixed(2)}</td>
+            <td class="p-3 text-blue-500">$${m.en_camino.toFixed(2)}</td>
         </tr>`;
     });
 
