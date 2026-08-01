@@ -1,0 +1,16 @@
+{
+  "name": "Gestor de Compras AMV",
+  "short_name": "Compras",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f9fafb",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "logo.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
